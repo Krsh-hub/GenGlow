@@ -12,7 +12,7 @@ const About = () => {
         <title>About - GenGlow | AI Brand Visibility Tracking</title>
         <meta
           name="description"
-          content="Understand how your brand appears in AI search answers. Track visibility across ChatGPT, Perplexity, and Google AI experiences."
+          content="Understand how your brand appears in AI search answers. Track visibility across ChatGPT, Perplexity, and Gemini."
         />
         <link rel="canonical" href="https://genglow.ai/about" />
       </Helmet>
@@ -42,7 +42,7 @@ const About = () => {
                   This project helps you understand whether your brand{" "}
                   <span className="gradient-text font-semibold">glows</span> in AI search answers. 
                   It checks how often and how clearly you are mentioned across systems like ChatGPT, 
-                  Perplexity, and Google's AI experiences, so you can see where you stand and what to improve next.
+                  Perplexity, and Gemini, so you can see where you stand and what to improve next.
                 </p>
               </div>
             </div>
