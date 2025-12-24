@@ -89,7 +89,7 @@ const Hero = () => {
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 animate-fade-up-delay">
-            Track your visibility across ChatGPT, Perplexity, and Google AI.
+            Track your visibility across ChatGPT, Perplexity, and Gemini.
             <br className="hidden md:block" />
             Know when AI mentions your brand — and when it doesn't.
           </p>
