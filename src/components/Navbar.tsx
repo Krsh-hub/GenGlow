@@ -8,9 +8,10 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-foreground" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                <img src="/favicon.ico" alt="Logo" width="32" height="32" />
             </div>
+
             <span className="font-display font-bold text-xl text-foreground">
               GenGlow
             </span>
