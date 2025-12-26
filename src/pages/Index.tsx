@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import FreeAudit from "@/components/FreeAudit";
+import FloatingBackground from "@/components/FloatingBackground";
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
         <link rel="canonical" href="https://genglow.ai" />
       </Helmet>
 
+      <FloatingBackground />
       <div className="min-h-screen bg-background">
         <Navbar />
         <main>

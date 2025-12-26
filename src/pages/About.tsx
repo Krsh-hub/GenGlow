@@ -4,6 +4,7 @@ import { ArrowRight, Search, Target, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FloatingBackground from "@/components/FloatingBackground";
 
 const About = () => {
   return (
@@ -16,7 +17,7 @@ const About = () => {
         />
         <link rel="canonical" href="https://genglow.ai/about" />
       </Helmet>
-
+      <FloatingBackground />
       <div className="min-h-screen bg-background">
         <Navbar />
         
