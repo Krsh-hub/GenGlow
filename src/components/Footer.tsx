@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start gap-3">
             <Link to="/" className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-foreground" />
+                <img src="/favicon.ico" alt="Logo" width="32" height="32" />
               </div>
               <span className="font-display font-bold text-lg text-foreground">
                 GenGlow
