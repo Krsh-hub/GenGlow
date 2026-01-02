@@ -3,7 +3,6 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import FreeAudit from "@/components/FreeAudit";
 import FloatingBackground from "@/components/FloatingBackground";
 
 const Index = () => {
@@ -24,7 +23,6 @@ const Index = () => {
         <Navbar />
         <main>
           <Hero />
-          <FreeAudit />
           <FAQ />
         </main>
         <Footer />
