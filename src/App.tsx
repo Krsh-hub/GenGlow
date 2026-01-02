@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Settings from "./pages/Settings";
+import AuditResults from "./pages/AuditResults"; // 👈 NEW
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,9 @@ const App = () => (
             {/* app */}
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/settings" element={<Settings />} />
+
+            {/* quick audit 👈 NEW */}
+            <Route path="/audit-results" element={<AuditResults />} />
 
             {/* 404 */}
             <Route path="*" element={<NotFound />} />
