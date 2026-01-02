@@ -22,13 +22,25 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      // Create user account
+      // Create user
       const { data, error } = await supabase.auth.signUp({
-        email,
+        email: email.trim().toLowerCase(),
         password,
+        options: {
+          data: {
+            brand_name: brandName,
+          },
+        },
       });
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          title: "Signup failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
 
       if (data.user) {
         // Create user settings
@@ -37,21 +49,25 @@ const Signup = () => {
           .insert({
             user_id: data.user.id,
             brand_name: brandName,
-            email_notifications: true,
           });
 
-        if (settingsError) throw settingsError;
+        if (settingsError) {
+          toast({
+            title: "Account created but settings failed",
+            description: "Please update your brand name in settings.",
+          });
+        }
 
         toast({
           title: "Account created! 🎉",
-          description: "Check your email to verify your account",
+          description: "Check your email to confirm your account",
         });
 
         navigate("/login");
       }
     } catch (error: any) {
       toast({
-        title: "Signup failed",
+        title: "Error",
         description: error.message,
         variant: "destructive",
       });
