@@ -2,152 +2,95 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
-import { z } from "zod";
-
-const emailSchema = z.string().email("Please enter a valid email address");
+import { Link } from "react-router-dom";
 
 const Hero = () => {
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [brand, setBrand] = useState("");
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleQuickAudit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!brand.trim()) return;
 
-    // Validate email
-    const result = emailSchema.safeParse(email);
-    if (!result.success) {
-      toast({
-        title: "Invalid email",
-        description: result.error.errors[0].message,
-        variant: "destructive",
-      });
-      return;
-    }
+    setLoading(true);
 
-    setIsLoading(true);
-
-    try {
-      const { error } = await supabase.from("leads").insert({ email: email.trim().toLowerCase() });
-
-      if (error) {
-        if (error.code === "23505") {
-          toast({
-            title: "Already registered",
-            description: "This email is already on our early access list!",
-          });
-        } else {
-          throw error;
-        }
-      } else {
-        setIsSubmitted(true);
-        toast({
-          title: "Welcome aboard! 🎉",
-          description: "You're on the early access list. We'll be in touch soon!",
-        });
-      }
-    } catch (error) {
-      console.error("Error submitting email:", error);
-      toast({
-        title: "Something went wrong",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // Simulate quick audit (replace with real API call later)
+    setTimeout(() => {
+      setLoading(false);
+      
+      // Redirect to results page with brand in query params
+      window.location.href = `/audit-results?brand=${encodeURIComponent(brand)}`;
+    }, 1500);
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center hero-glow overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1.5s" }} />
-      </div>
-
-      <div className="container mx-auto px-6 py-32 relative z-10">
+    <section className="relative overflow-hidden py-20 md:py-32">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/10" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 animate-fade-up">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="text-sm text-muted-foreground">
-              Coming soon — Join the waitlist
-            </span>
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+            See your AI visibility in 30 seconds
           </div>
 
           {/* Headline */}
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-up">
+          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent mb-6 leading-tight">
             See if your brand{" "}
-            <span className="gradient-text">glows</span>
+            <span className="text-primary">glows</span>
             <br />
             in AI search answers
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 animate-fade-up-delay">
-            Track your visibility across ChatGPT, Perplexity, and Gemini.
-            <br className="hidden md:block" />
+          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+            Track your visibility across ChatGPT, Perplexity, and Gemini. 
+            <br />
             Know when AI mentions your brand — and when it doesn't.
           </p>
 
-          {/* Email Form */}
-          <div className="max-w-md mx-auto animate-fade-up-delay-2">
-            {isSubmitted ? (
-              <div className="flex items-center justify-center gap-3 p-6 rounded-2xl glass">
-                <CheckCircle2 className="w-6 h-6 text-accent" />
-                <span className="text-foreground font-medium">
-                  You're on the list! Check your inbox soon.
-                </span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 bg-secondary/50 border-border/50"
-                  disabled={isLoading}
-                  required
-                />
-                <Button
-                  type="submit"
-                  variant="accent"
-                  size="lg"
-                  disabled={isLoading}
-                  className="group"
-                >
-                  {isLoading ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    <>
-                      Join early access
-                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </>
-                  )}
-                </Button>
-              </form>
-            )}
-          </div>
+          {/* Quick Audit Form */}
+          <form onSubmit={handleQuickAudit} className="max-w-md mx-auto mb-12">
+            <div className="flex gap-2 bg-secondary/50 border border-border/50 rounded-2xl p-1 shadow-xl">
+              <Input
+                placeholder="Your brand name (e.g. Tesla)"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+                className="flex-1 bg-background border-none shadow-none h-14 text-lg placeholder:text-muted-foreground/80"
+                disabled={loading}
+                required
+              />
+              <Button 
+                type="submit" 
+                size="lg" 
+                className="px-8 shadow-lg h-14"
+                disabled={loading || !brand.trim()}
+              >
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <>
+                    Check Now
+                    <ArrowRight className="w-5 h-5 ml-1" />
+                  </>
+                )}
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              No signup required • Instant results
+            </p>
+          </form>
 
           {/* Trust Signals */}
-          <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground animate-fade-up-delay-2">
-            <span className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              Free to join
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              No credit card
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              Cancel anytime
-            </span>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm text-muted-foreground">
+            <span>✅ No credit card required</span>
+            <span>•</span>
+            <span>⚡ Instant results</span>
+            <span>•</span>
+            <span>🔒 100% private</span>
           </div>
         </div>
       </div>
