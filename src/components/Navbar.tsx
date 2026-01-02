@@ -82,7 +82,7 @@ const Navbar = () => {
                   Login
                 </Link>
                 <Link
-                  to="/AuditResults"
+                  to="/signup"
                   className="text-sm font-medium px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
                   Get Started
