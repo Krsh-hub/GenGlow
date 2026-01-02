@@ -22,21 +22,28 @@ const Login = () => {
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: email.trim().toLowerCase(),
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          title: "Login failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
 
       toast({
         title: "Welcome back!",
-        description: "Successfully logged in",
+        description: "Redirecting to dashboard...",
       });
 
       navigate("/dashboard");
     } catch (error: any) {
       toast({
-        title: "Login failed",
+        title: "Error",
         description: error.message,
         variant: "destructive",
       });
@@ -49,7 +56,6 @@ const Login = () => {
     <div className="min-h-screen bg-background relative">
       <FloatingBackground />
       <Navbar />
-
       <div className="container mx-auto px-4 py-16 flex items-center justify-center min-h-[calc(100vh-80px)]">
         <Card className="w-full max-w-md p-8 relative z-10">
           <div className="flex items-center justify-center mb-6">
