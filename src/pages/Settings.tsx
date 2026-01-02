@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { Loader2, Save, Plus, Trash2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -16,7 +18,23 @@ interface Competitor {
 }
 
 const Settings = () => {
-  const [loading, setLoading] = useState(true);
+  const { user, loading: authLoading } = useAuth();
+  
+  // Loading state for auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Redirect if not authenticated
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  const [pageLoading, setPageLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [brandName, setBrandName] = useState("");
   const [slackWebhook, setSlackWebhook] = useState("");
@@ -32,13 +50,10 @@ const Settings = () => {
 
   const loadSettings = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
       const { data, error } = await supabase
         .from("user_settings")
         .select("*")
-        .eq("user_id", user.id)
+        .eq("user_id", user!.id)
         .single();
 
       if (error && error.code !== "PGRST116") throw error;
@@ -51,19 +66,16 @@ const Settings = () => {
     } catch (error) {
       console.error("Error loading settings:", error);
     } finally {
-      setLoading(false);
+      setPageLoading(false);
     }
   };
 
   const loadCompetitors = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
       const { data, error } = await supabase
         .from("competitors")
         .select("*")
-        .eq("user_id", user.id);
+        .eq("user_id", user!.id);
 
       if (error) throw error;
       setCompetitors(data || []);
@@ -75,13 +87,10 @@ const Settings = () => {
   const saveSettings = async () => {
     setSaving(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
       const { error } = await supabase
         .from("user_settings")
         .upsert({
-          user_id: user.id,
+          user_id: user!.id,
           brand_name: brandName,
           slack_webhook_url: slackWebhook || null,
           email_notifications: emailNotifications,
@@ -108,13 +117,10 @@ const Settings = () => {
     if (!newCompetitor.trim()) return;
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
       const { data, error } = await supabase
         .from("competitors")
         .insert({
-          user_id: user.id,
+          user_id: user!.id,
           competitor_name: newCompetitor.trim(),
         })
         .select()
@@ -159,7 +165,7 @@ const Settings = () => {
     }
   };
 
-  if (loading) {
+  if (pageLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
