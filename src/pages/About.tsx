@@ -17,6 +17,7 @@ const About = () => {
         />
         <link rel="canonical" href="https://genglow.ai/about" />
       </Helmet>
+      
       <FloatingBackground />
       <div className="min-h-screen bg-background">
         <Navbar />

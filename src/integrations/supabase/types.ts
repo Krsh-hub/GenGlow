@@ -6,6 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
@@ -32,6 +33,174 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_citations: {
+        Row: {
+          id: string
+          created_at: string
+          user_id: string | null
+          query: string
+          ai_engine: string
+          brand_name: string
+          citation_url: string | null
+          citation_position: number | null
+          recommendation_score: number | null
+          is_competitor: boolean
+          sentiment: string
+          context: string | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          user_id?: string | null
+          query: string
+          ai_engine: string
+          brand_name: string
+          citation_url?: string | null
+          citation_position?: number | null
+          recommendation_score?: number | null
+          is_competitor?: boolean
+          sentiment?: string
+          context?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          user_id?: string | null
+          query?: string
+          ai_engine?: string
+          brand_name?: string
+          citation_url?: string | null
+          citation_position?: number | null
+          recommendation_score?: number | null
+          is_competitor?: boolean
+          sentiment?: string
+          context?: string | null
+        }
+        Relationships: []
+      }
+      tracked_queries: {
+        Row: {
+          id: string
+          created_at: string
+          user_id: string | null
+          query: string
+          category: string | null
+          is_active: boolean
+          check_frequency: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          user_id?: string | null
+          query: string
+          category?: string | null
+          is_active?: boolean
+          check_frequency?: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          user_id?: string | null
+          query?: string
+          category?: string | null
+          is_active?: boolean
+          check_frequency?: string
+        }
+        Relationships: []
+      }
+      competitors: {
+        Row: {
+          id: string
+          created_at: string
+          user_id: string | null
+          competitor_name: string
+          competitor_domain: string | null
+          alert_threshold: number
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          user_id?: string | null
+          competitor_name: string
+          competitor_domain?: string | null
+          alert_threshold?: number
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          user_id?: string | null
+          competitor_name?: string
+          competitor_domain?: string | null
+          alert_threshold?: number
+        }
+        Relationships: []
+      }
+      drift_alerts: {
+        Row: {
+          id: string
+          created_at: string
+          user_id: string | null
+          alert_type: string
+          query: string | null
+          competitor_name: string | null
+          message: string | null
+          severity: string
+          is_read: boolean
+          metadata: Json | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          user_id?: string | null
+          alert_type: string
+          query?: string | null
+          competitor_name?: string | null
+          message?: string | null
+          severity?: string
+          is_read?: boolean
+          metadata?: Json | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          user_id?: string | null
+          alert_type?: string
+          query?: string | null
+          competitor_name?: string | null
+          message?: string | null
+          severity?: string
+          is_read?: boolean
+          metadata?: Json | null
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          id: string
+          user_id: string
+          brand_name: string
+          slack_webhook_url: string | null
+          email_notifications: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          brand_name: string
+          slack_webhook_url?: string | null
+          email_notifications?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          brand_name?: string
+          slack_webhook_url?: string | null
+          email_notifications?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -48,9 +217,12 @@ export type Database = {
   }
 }
 
+
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
+
 type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
@@ -81,6 +253,7 @@ export type Tables<
       : never
     : never
 
+
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
@@ -105,6 +278,7 @@ export type TablesInsert<
       ? I
       : never
     : never
+
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
@@ -131,6 +305,7 @@ export type TablesUpdate<
       : never
     : never
 
+
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
@@ -148,6 +323,7 @@ export type Enums<
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
 
+
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
@@ -164,6 +340,7 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+
 
 export const Constants = {
   public: {
